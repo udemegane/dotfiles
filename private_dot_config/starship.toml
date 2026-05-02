@@ -1,4 +1,56 @@
+add_newline = true
+
+format = "$username$hostname$directory$git_branch$git_status$python$status$line_break$character"
+
+[username]
+show_always = false
+format = "[$user]($style)@"
+style_user = "bold red"
+
+[hostname]
+ssh_only = true
+format = "[$hostname]($style) "
+style = "bold yellow"
+
 [directory]
 truncation_length = 8
 truncation_symbol = "…/"
 fish_style_pwd_dir_length = 1
+style = "bold blue"
+format = "[$path]($style)[$read_only]($read_only_style) "
+
+[git_branch]
+format = "on [$branch(:$remote_branch)]($style)"
+style = "bold green"
+
+[git_status]
+format = '([$all_status$ahead_behind]($style))'
+style = "bold yellow"
+conflicted = "═"
+ahead = "⬆${count}"
+behind = "⬇${count}"
+diverged = "⬆${ahead_count}⬇${behind_count}"
+untracked = "◼${count}"
+stashed = "✭"
+modified = "✱${count}"
+staged = "✚${count}"
+renamed = "➜${count}"
+deleted = "✖${count}"
+
+[python]
+format = '[(\($virtualenv\))]($style) '
+style = "bold yellow"
+
+[status]
+format = '[✘ $status]($style) '
+style = "bold red"
+
+[line_break]
+disabled = false
+
+[character]
+success_symbol = "[❯❯❯](bold green)"
+error_symbol = "[❯❯❯](bold red)"
+
+[cmd_duration]
+disabled = true

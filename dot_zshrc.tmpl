@@ -1,18 +1,36 @@
-{{- if eq .chezmoi.os "darwin" }}
-eval "$(/opt/homebrew/bin/brew shellenv)"
-{{- else if eq .chezmoi.os "linux" }}
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-{{- end }}
+# History
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+setopt EXTENDED_HISTORY
+setopt SHARE_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
 
+# Ensure binaries are in PATH before calling mise/starship
+for _p in "$HOME/.local/bin" "$HOME/.opencode/bin"; do
+    case ":${PATH}:" in
+        *:"$_p":*) ;;
+        *) export PATH="$_p:$PATH" ;;
+    esac
+done
+unset _p
+
+{{ if eq .chezmoi.os "darwin" -}}
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+{{ end -}}
 eval "$(mise activate zsh)"
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
-eval "$(fzf --zsh)"
 
 {{- if eq .chezmoi.os "darwin" }}
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+eval "$(fzf --zsh)"
 {{- else if eq .chezmoi.os "linux" }}
-source /home/linuxbrew/.linuxbrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /home/linuxbrew/.linuxbrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/doc/fzf/examples/key-bindings.zsh
+source /usr/share/doc/fzf/examples/completion.zsh
 {{- end }}
